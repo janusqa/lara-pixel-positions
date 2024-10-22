@@ -298,3 +298,9 @@ can  set from/to in .env file which affects mails globally and also override on 
   - npm run build
     - this will bundle all your frontend files for you to copy to the product server.
     - the output files from the build process are in "public/build"
+
+### Images
+- put images in app/resources/images
+-  in resources/js/app.js configure images
+   -  import.meta.glob(["../images/**"]); // mage images avaliable from the resourses directory.
+   -  To load an image ```<img src="{{ Vite::asset('resources/images/logo.svg') }}" alt="logo" />```  
