@@ -6,6 +6,29 @@
 - ./vendor/bin/sail artisan migrate (Run only the very first time you set up the app)
 
 
+### Change the default name for Jobs in the database (exmple of how to change table name for table that ships with laravel)
+- open /app/config/queue.php
+- Change
+  ```
+    table' => env('DB_QUEUE_TABLE', 'jobs')
+
+    'table' => 'job_batches'
+
+     'table' => 'failed_jobs'
+  ```
+   to 
+  ```
+    'table' => env('DB_QUEUE_TABLE', 'queued_jobs')
+
+    'table' => 'queued_job_batches'
+
+     'table' => 'queued_failed_jobs'
+  ```
+  - Now open rename the migrtion file for this table from "0001_01_01_000002_create_jobs_table" to "0001_01_01_000002_create_queued_jobs_table"
+    - within this file prefix "queued_" to "jobs", "batch_jobs" and "failed_jobs" in all places.  So now we should have queued_jobs, queued_batched_jobs, queued_failed_jobs everywhere in this file. 
+
+
+
 ### Run laravel app
 - cd ./example-app
 - ./vendor/bin/sail up
@@ -31,6 +54,11 @@ Running commands must be done via sail
 
 ### REPL for laravel app
 - php artisan tinker  // opens a repl for laravel
+
+### Models
+- Create a model with a migration, controller, factory, seeder and policy
+  - php artisan make:model Employer -mcfs --policy
+  - This is were we set up relationships between models etc.
 
 
 ### Factories
@@ -95,6 +123,7 @@ N+1 problem
 - $fillable // signifies which fields can be mass populated when using eloquent to create a record.
 - $guarded // opposite to fillable, so signifies which fields CANNOT be mass populated. Usually less annoying than fillable
 - so to diable fillable one way is to use $guarded with an empty array.
+- to disable globally place "Model::unguard()" in the "boot" function of the "AppServiceProvider.php"
 
 ### Validation
 - request()->validate()
@@ -304,3 +333,16 @@ can  set from/to in .env file which affects mails globally and also override on 
 -  in resources/js/app.js configure images
    -  import.meta.glob(["../images/**"]); // mage images avaliable from the resourses directory.
    -  To load an image ```<img src="{{ Vite::asset('resources/images/logo.svg') }}" alt="logo" />```  
+
+
+### Testing
+- configure in phpunit.xml
+  - emample set up the database connection to be sqlite
+  - example set database to be memory. Use env vars at bottom of file
+- php artisan make:test // for interactive interface
+  - choose unit test // feature test are more expansive aka testing behaviour
+  - test are created in the /app/test directory
+  -  use RefreshDatabase;  // use this trait in your test cases put inside of test class
+  -  in main test file use "use Tests\TestCase;" instead of what was there.
+- php artisan test // run all test
+- see /tests/Unit/JobTest.php as example
