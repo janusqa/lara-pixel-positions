@@ -39,6 +39,7 @@ class RegisteredUserController extends Controller
         // FILESYSTEM_DISK=public.  It is set to "local" by default.
         // Now uploaded logos will be saved to /storage/app/public/logos, given the code below
         // Then we will create a sym link from there to the /public folder so that the files are publicly acessible from there.
+        // Run "php artisan storage:link" to create the symlinks.
         $logoPath = $request->logo->store('logos'); // this handles the saving of the image
 
 

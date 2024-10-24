@@ -333,6 +333,15 @@ can  set from/to in .env file which affects mails globally and also override on 
 -  in resources/js/app.js configure images
    -  import.meta.glob(["../images/**"]); // mage images avaliable from the resourses directory.
    -  To load an image ```<img src="{{ Vite::asset('resources/images/logo.svg') }}" alt="logo" />```  
+  
+### Storage
+        // See available storage options in /app/config/filesystems.php (currently "local", "public", "s3")
+        // Select one of these and update FILESYSTEM_DISK in /.env to your preference
+        // we want logos to be accessible publicly so we will update /.env to reflect that by setting
+        // FILESYSTEM_DISK=public.  It is set to "local" by default.
+        // Now uploaded logos will be saved to /storage/app/public/logos, given the code below
+        // Then we will create a sym link from there to the /public folder so that the files are publicly acessible from there.
+        // Run "php artisan storage:link" to create the symlinks.
 
 
 ### Testing
